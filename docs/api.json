@@ -1,0 +1,162 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+      "version": "1.0.0",
+      "title": "Register API",
+      "description": "API untuk registrasi dan login pengguna",
+      "contact": {
+        "name": "Your Name",
+        "email": "your.email@example.com"
+      }
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000"
+        }
+    ],
+    "paths": {
+      "/api/register": {
+        "post": {
+          "summary": "Registrasi pengguna baru",
+          "description": "Mendaftarkan pengguna baru ke dalam sistem.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegisterRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Pengguna berhasil didaftarkan",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/RegisterResponse"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Request tidak valid",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/api/login": {
+        "post": {
+          "summary": "Login pengguna",
+          "description": "Login pengguna ke dalam sistem.",
+          "requestBody": {
+            "required": true,
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginRequest"
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Login berhasil",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/LoginResponse"
+                  }
+                }
+              }
+            },
+            "401": {
+              "description": "Unauthorized",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "components": {
+      "schemas": {
+        "RegisterRequest": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "password": {
+              "type": "string"
+            },
+            "c_password": {
+              "type": "string"
+            }
+          },
+          "required": ["name", "email", "password", "c_password"]
+        },
+        "RegisterResponse": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "LoginRequest": {
+          "type": "object",
+          "properties": {
+            "email": {
+              "type": "string",
+              "format": "email"
+            },
+            "password": {
+              "type": "string"
+            }
+          },
+          "required": ["email", "password"]
+        },
+        "LoginResponse": {
+          "type": "object",
+          "properties": {
+            "token": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            }
+          }
+        },
+        "Error": {
+          "type": "object",
+          "properties": {
+            "error": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+  

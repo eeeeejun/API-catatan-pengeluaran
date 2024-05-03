@@ -1,0 +1,265 @@
+{
+    "swagger": "2.0",
+    "info": {
+      "title": "Expenses API",
+      "version": "1.0.0"
+    },
+    "host": "localhost:8000", 
+    "schemes": [
+      "http"
+    ],
+    "basePath": "/api", 
+    "paths": {
+      "/expenses": {
+        "get": {
+          "summary": "Get all expenses",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "A list of expenses",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expenses": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Expense"
+                    }
+                  },
+                  "total_expenses": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "post": {
+          "summary": "Create a new expense",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Expense object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/ExpenseInput"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Expense created successfully",
+              "schema": {
+                "$ref": "#/definitions/Expense"
+              }
+            }
+          }
+        }
+      },
+      "/expenses/{id}": {
+        "get": {
+          "summary": "Get an expense by ID",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Expense found",
+              "schema": {
+                "$ref": "#/definitions/Expense"
+              }
+            }
+          }
+        },
+        "put": {
+          "summary": "Update an existing expense",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the expense to update",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            },
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Expense object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/ExpenseInput"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Expense updated successfully",
+              "schema": {
+                "$ref": "#/definitions/Expense"
+              }
+            }
+          }
+        },
+        "delete": {
+          "summary": "Delete an existing expense",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "name": "id",
+              "in": "path",
+              "description": "ID of the expense to delete",
+              "required": true,
+              "type": "integer",
+              "format": "int64"
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Expense deleted successfully",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "/expenses/filter": {
+        "post": {
+          "summary": "Filter expenses by date range",
+          "security": [
+            {
+              "BearerAuth": []
+            }
+          ],
+          "parameters": [
+            {
+              "in": "body",
+              "name": "body",
+              "description": "Date range object",
+              "required": true,
+              "schema": {
+                "$ref": "#/definitions/DateRange"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Expenses filtered successfully",
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "expenses": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Expense"
+                    }
+                  },
+                  "total_expenses": {
+                    "type": "number"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "securityDefinitions": {
+      "BearerAuth": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header"
+      }
+    },
+    "definitions": {
+      "Expense": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "ExpenseInput": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "number"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "DateRange": {
+        "type": "object",
+        "properties": {
+          "start_date": {
+            "type": "string",
+            "format": "date"
+          },
+          "end_date": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      }
+    }
+  }
+  
